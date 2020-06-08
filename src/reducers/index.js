@@ -1,3 +1,6 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from "redux";
+import stockReducer from "./stockReducer";
 
-export default combineReducers({});
+export default combineReducers({
+  stock: stockReducer,
+});
