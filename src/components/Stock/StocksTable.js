@@ -46,7 +46,8 @@ class StocksTable extends Component {
     super(props);
     this.state = {
       columns: [
-        { title: "Дата", field: "date" },
+        { title: "Дата", field: "date", editable: "onUpdate" },
+        { title: "Инструмент", field: "companyName", editable: "never" },
         { title: "Стоимость", field: "price", type: "numeric" },
       ],
     };
