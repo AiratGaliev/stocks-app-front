@@ -23,7 +23,7 @@ class Stocks extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (
-      this.props.stock !== prevProps.stock &&
+      this.props.stock !== prevProps.stock ||
       this.props.company !== prevProps.company
     ) {
       this.setState({
