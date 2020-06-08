@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import {
+  ResponsiveContainer,
   LineChart,
   Line,
   XAxis,
@@ -58,47 +59,47 @@ const data = [
 
 class StocksChart extends PureComponent {
   formatXAxis = (tickItem) => {
-    return moment(tickItem).format("DD MM YYYY");
+    return moment(tickItem).format("DD.MM.YYYY");
   };
 
   render() {
     return (
-      <LineChart
-        width={800}
-        height={400}
-        data={data}
-        margin={{
-          top: 60,
-          right: 60,
-          left: 60,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" tickFormatter={this.formatXAxis}>
-          <Label
-            value={"Дата"}
-            position="right"
-            style={{ textAnchor: "middle" }}
+      <ResponsiveContainer width={"100%"} height={400}>
+        <LineChart
+          data={data}
+          margin={{
+            top: 60,
+            right: 60,
+            left: 60,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" tickFormatter={this.formatXAxis}>
+            <Label
+              value={"Дата"}
+              position="right"
+              style={{ textAnchor: "middle" }}
+            />
+          </XAxis>
+          <YAxis>
+            <Label
+              value={"Стоимость"}
+              position="top"
+              style={{ textAnchor: "middle" }}
+            />
+          </YAxis>
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotype"
+            dataKey="pv"
+            stroke="#8884d8"
+            activeDot={{ r: 8 }}
           />
-        </XAxis>
-        <YAxis>
-          <Label
-            value={"Стоимость"}
-            position="top"
-            style={{ textAnchor: "middle" }}
-          />
-        </YAxis>
-        <Tooltip />
-        <Legend />
-        <Line
-          type="monotype"
-          dataKey="pv"
-          stroke="#8884d8"
-          activeDot={{ r: 8 }}
-        />
-        <Line type="monotype" dataKey="uv" stroke="#82ca9d" />
-      </LineChart>
+          <Line type="monotype" dataKey="uv" stroke="#82ca9d" />
+        </LineChart>
+      </ResponsiveContainer>
     );
   }
 }
