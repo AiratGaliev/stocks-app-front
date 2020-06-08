@@ -12,57 +12,38 @@ import {
 } from "recharts";
 import moment from "moment";
 
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
 class StocksChart extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = { data: [], stocks: [] };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.stocks !== prevProps.stocks) {
+      let temp = {};
+      let newData = [];
+      this.props.stocks.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+      this.props.stocks.forEach((stock) => {
+        temp = { date: Date.parse(stock.date) };
+        newData.push(temp);
+        temp[stock.companyName] = stock.price;
+        newData.join(temp);
+      });
+      this.setState({ data: newData });
+    }
+  }
+
   formatXAxis = (tickItem) => {
     return moment(tickItem).format("DD.MM.YYYY");
   };
 
+  payloadFormatter = (name) => {
+    return moment(name).format("DD.MM.YYYY");
+  };
+
   render() {
+    const { data } = this.state;
+    const { companies } = this.props;
     return (
       <ResponsiveContainer width={"100%"} height={400}>
         <LineChart
@@ -75,7 +56,12 @@ class StocksChart extends PureComponent {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" tickFormatter={this.formatXAxis}>
+          <XAxis
+            type="number"
+            dataKey="date"
+            tickFormatter={this.formatXAxis}
+            domain={["dataMin", "dataMax"]}
+          >
             <Label
               value={"Дата"}
               position="right"
@@ -89,15 +75,13 @@ class StocksChart extends PureComponent {
               style={{ textAnchor: "middle" }}
             />
           </YAxis>
-          <Tooltip />
+          <Tooltip labelFormatter={this.payloadFormatter} />
           <Legend />
-          <Line
-            type="monotype"
-            dataKey="pv"
-            stroke="#8884d8"
-            activeDot={{ r: 8 }}
-          />
-          <Line type="monotype" dataKey="uv" stroke="#82ca9d" />
+          {companies !== undefined && companies.length > 0
+            ? companies.map((company) => (
+                <Line connectNulls dataKey={company.name} key={company.id} />
+              ))
+            : null}
         </LineChart>
       </ResponsiveContainer>
     );

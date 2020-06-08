@@ -38,7 +38,7 @@ class Stocks extends Component {
     return (
       <div>
         <StocksTable data={stocks} />
-        <StocksChart data={companies} />
+        <StocksChart stocks={stocks} companies={companies} />
       </div>
     );
   }
