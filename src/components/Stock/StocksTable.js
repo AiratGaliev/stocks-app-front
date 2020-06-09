@@ -46,7 +46,7 @@ class StocksTable extends Component {
     super(props);
     this.state = {
       columns: [
-        { title: "Дата", field: "date", editable: "onUpdate" },
+        { title: "Дата", field: "date", editable: "never" },
         { title: "Инструмент", field: "companyName", editable: "never" },
         { title: "Стоимость", field: "price", type: "numeric" },
       ],
@@ -54,7 +54,7 @@ class StocksTable extends Component {
   }
 
   render() {
-    const { data, onDelClick } = this.props;
+    const { data, onSubmit, onDelClick } = this.props;
     return (
       <MaterialTable
         icons={tableIcons}
@@ -73,25 +73,22 @@ class StocksTable extends Component {
           //       });
           //     }, 600);
           //   }),
-          // onRowUpdate: (newData, oldData) =>
-          //   new Promise((resolve) => {
-          //     setTimeout(() => {
-          //       resolve();
-          //       if (oldData) {
-          //         this.setState((prevState) => {
-          //           const data = [...prevState.data];
-          //           data[data.indexOf(oldData)] = newData;
-          //           return { ...prevState, data };
-          //         });
-          //       }
-          //     }, 600);
-          //   }),
+          onRowUpdate: (newData) =>
+            new Promise((resolve) => {
+              onSubmit(newData);
+              setTimeout(() => {
+                this.setState((prevState) => ({
+                  // data: [...prevState.data, newData],
+                }));
+                resolve();
+              }, 1000);
+            }),
           onRowDelete: (rowData) =>
             new Promise((resolve) => {
+              onDelClick(rowData.id);
               setTimeout(() => {
                 resolve();
-                onDelClick(rowData.id);
-              }, 600);
+              }, 1200);
             }),
         }}
       />
