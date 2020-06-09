@@ -1,4 +1,4 @@
-import { GET_STOCKS } from "../actions/types";
+import { GET_STOCKS, DELETE_STOCK } from "../actions/types";
 
 const initialState = {
   stocks: [],
@@ -11,6 +11,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         stocks: action.payload,
+      };
+    case DELETE_STOCK:
+      return {
+        ...state,
+        stocks: state.stocks.filter((stock) => stock.id !== action.payload),
       };
     default:
       return state;

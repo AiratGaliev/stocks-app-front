@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styles from "../../styles";
 import PropTypes from "prop-types";
-import { getStocks } from "../../actions/stockActions";
+import { getStocks, deleteStock } from "../../actions/stockActions";
 import { getCompanies } from "../../actions/companyActions";
 import { connect } from "react-redux";
 import StocksTable from "./StocksTable";
@@ -33,11 +33,15 @@ class Stocks extends Component {
     }
   }
 
+  onDelClick = (id) => {
+    this.props.deleteStock(id);
+  };
+
   render() {
     const { stocks, companies } = this.state;
     return (
       <div>
-        <StocksTable data={stocks} />
+        <StocksTable data={stocks} onDelClick={this.onDelClick} />
         <StocksChart stocks={stocks} companies={companies} />
       </div>
     );
@@ -48,6 +52,7 @@ Stocks.protoTypes = {
   stock: PropTypes.object.isRequired,
   company: PropTypes.object.isRequired,
   getStocks: PropTypes.func.isRequired,
+  deleteStock: PropTypes.func.isRequired,
   getCompanies: PropTypes.func.isRequired,
 };
 
@@ -56,6 +61,8 @@ const mapStateToProps = (state) => ({
   company: state.company,
 });
 
-export default connect(mapStateToProps, { getStocks, getCompanies })(
-  styles(Stocks)
-);
+export default connect(mapStateToProps, {
+  getStocks,
+  getCompanies,
+  deleteStock,
+})(styles(Stocks));

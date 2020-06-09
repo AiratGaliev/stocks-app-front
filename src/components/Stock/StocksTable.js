@@ -54,7 +54,7 @@ class StocksTable extends Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, onDelClick } = this.props;
     return (
       <MaterialTable
         icons={tableIcons}
@@ -62,39 +62,35 @@ class StocksTable extends Component {
         columns={this.state.columns}
         data={data}
         editable={{
-          onRowAdd: (newData) =>
+          // onRowAdd: (newData) =>
+          //   new Promise((resolve) => {
+          //     setTimeout(() => {
+          //       resolve();
+          //       this.setState((prevState) => {
+          //         const data = [...prevState.data];
+          //         data.push(newData);
+          //         return { ...prevState, data };
+          //       });
+          //     }, 600);
+          //   }),
+          // onRowUpdate: (newData, oldData) =>
+          //   new Promise((resolve) => {
+          //     setTimeout(() => {
+          //       resolve();
+          //       if (oldData) {
+          //         this.setState((prevState) => {
+          //           const data = [...prevState.data];
+          //           data[data.indexOf(oldData)] = newData;
+          //           return { ...prevState, data };
+          //         });
+          //       }
+          //     }, 600);
+          //   }),
+          onRowDelete: (rowData) =>
             new Promise((resolve) => {
               setTimeout(() => {
                 resolve();
-                this.setState((prevState) => {
-                  const data = [...prevState.data];
-                  data.push(newData);
-                  return { ...prevState, data };
-                });
-              }, 600);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                if (oldData) {
-                  this.setState((prevState) => {
-                    const data = [...prevState.data];
-                    data[data.indexOf(oldData)] = newData;
-                    return { ...prevState, data };
-                  });
-                }
-              }, 600);
-            }),
-          onRowDelete: (oldData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                this.setState((prevState) => {
-                  const data = [...prevState.data];
-                  data.splice(data.indexOf(oldData), 1);
-                  return { ...prevState, data };
-                });
+                onDelClick(rowData.id);
               }, 600);
             }),
         }}

@@ -1,4 +1,4 @@
-import { GET_COMPANIES } from "../actions/types";
+import { GET_COMPANIES, DELETE_COMPANY } from "../actions/types";
 
 const initialState = {
   companies: [],
@@ -11,6 +11,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         companies: action.payload,
+      };
+    case DELETE_COMPANY:
+      return {
+        ...state,
+        companies: state.companies.filter(
+          (company) => company.id !== action.payload
+        ),
       };
     default:
       return state;
