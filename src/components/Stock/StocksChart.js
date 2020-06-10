@@ -33,12 +33,8 @@ class StocksChart extends PureComponent {
     }
   }
 
-  formatXAxis = (tickItem) => {
-    return moment(tickItem).format("DD.MM.YYYY");
-  };
-
-  payloadFormatter = (name) => {
-    return moment(name).format("DD.MM.YYYY");
+  dateFormatter = (item) => {
+    return moment(item).format("DD.MM.YYYY");
   };
 
   render() {
@@ -59,7 +55,7 @@ class StocksChart extends PureComponent {
           <XAxis
             type="number"
             dataKey="date"
-            tickFormatter={this.formatXAxis}
+            tickFormatter={this.dateFormatter}
             domain={["dataMin", "dataMax"]}
           >
             <Label
@@ -75,7 +71,7 @@ class StocksChart extends PureComponent {
               style={{ textAnchor: "middle" }}
             />
           </YAxis>
-          <Tooltip labelFormatter={this.payloadFormatter} />
+          <Tooltip labelFormatter={this.dateFormatter} />
           <Legend />
           {companies !== undefined && companies.length > 0
             ? companies.map((company) => (

@@ -33,6 +33,11 @@ class Stocks extends Component {
     }
   }
 
+  rowsChange = (newData) => {
+    this.setState({ stocks: newData });
+    this.props.getStocks();
+  };
+
   onSubmit = (newData) => {
     const stock = {
       price: newData.price,
@@ -53,6 +58,7 @@ class Stocks extends Component {
           data={stocks}
           onSubmit={this.onSubmit}
           onDelClick={this.onDelClick}
+          rowsChange={this.rowsChange}
         />
         <StocksChart stocks={stocks} companies={companies} />
       </div>
