@@ -1,5 +1,11 @@
 import axios from "axios";
-import { GET_STOCKS, DELETE_STOCK, GET_ERRORS } from "./types";
+import {
+  GET_STOCKS,
+  POST_STOCK,
+  PATCH_STOCK,
+  DELETE_STOCK,
+  GET_ERRORS,
+} from "./types";
 
 export const getStocks = () => async (dispatch) => {
   const res = await axios.get("/api/stocks");
@@ -11,10 +17,10 @@ export const getStocks = () => async (dispatch) => {
 
 export const createStock = (stock) => async (dispatch) => {
   try {
-    await axios.post("/api/stocks/create", stock);
+    const res = await axios.post("/api/stocks/create", stock);
     dispatch({
-      type: GET_ERRORS,
-      payload: {},
+      type: POST_STOCK,
+      payload: res.data,
     });
   } catch (error) {
     dispatch({
@@ -26,7 +32,11 @@ export const createStock = (stock) => async (dispatch) => {
 
 export const editStock = (stock) => async (dispatch) => {
   try {
-    await axios.patch(`/api/stocks/${stock.id}`, stock);
+    const res = await axios.patch(`/api/stocks/${stock.id}`, stock);
+    dispatch({
+      type: PATCH_STOCK,
+      payload: res.data,
+    });
   } catch (error) {
     dispatch({
       type: GET_ERRORS,
@@ -36,9 +46,9 @@ export const editStock = (stock) => async (dispatch) => {
 };
 
 export const deleteStock = (id) => async (dispatch) => {
-  await axios.delete(`/api/stocks/${id}`);
+  const res = await axios.delete(`/api/stocks/${id}`);
   dispatch({
     type: DELETE_STOCK,
-    payload: id,
+    payload: res.data,
   });
 };

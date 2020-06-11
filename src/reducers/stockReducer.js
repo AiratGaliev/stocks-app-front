@@ -1,4 +1,10 @@
-import { GET_STOCKS, DELETE_STOCK } from "../actions/types";
+import {
+  GET_STOCKS,
+  GET_STOCK,
+  POST_STOCK,
+  PATCH_STOCK,
+  DELETE_STOCK,
+} from "../actions/types";
 
 const initialState = {
   stocks: [],
@@ -11,6 +17,21 @@ export default function (state = initialState, action) {
       return {
         ...state,
         stocks: action.payload,
+      };
+    case GET_STOCK:
+      return {
+        ...state,
+        stock: action.payload,
+      };
+    case POST_STOCK:
+      return {
+        ...state,
+        stock: action.payload,
+      };
+    case PATCH_STOCK:
+      return {
+        ...state,
+        stock: action.payload,
       };
     case DELETE_STOCK:
       return {

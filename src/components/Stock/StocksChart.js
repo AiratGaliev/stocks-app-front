@@ -22,9 +22,10 @@ class StocksChart extends PureComponent {
     if (this.props.stocks !== prevProps.stocks) {
       let temp = {};
       let newData = [];
-      this.props.stocks.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
-      this.props.stocks.forEach((stock) => {
-        temp = { date: Date.parse(stock.date) };
+      let oldData = Array.from(this.props.stocks);
+      // oldData.slice().sort(this.customSort);
+      oldData.forEach((stock) => {
+        temp = { date: this.parseDate(stock.date) };
         newData.push(temp);
         temp[stock.companyName] = stock.price;
         newData.join(temp);
@@ -32,6 +33,14 @@ class StocksChart extends PureComponent {
       this.setState({ data: newData });
     }
   }
+
+  parseDate = (date) => {
+    return Date.parse(date);
+  };
+
+  // customSort = (a, b) => {
+  //   return this.parseDate(a.date) - this.parseDate(b.date);
+  // };
 
   dateFormatter = (item) => {
     return moment(item).format("DD.MM.YYYY");
@@ -59,14 +68,14 @@ class StocksChart extends PureComponent {
             domain={["dataMin", "dataMax"]}
           >
             <Label
-              value={"Дата"}
+              value={"Date"}
               position="right"
               style={{ textAnchor: "middle" }}
             />
           </XAxis>
           <YAxis>
             <Label
-              value={"Стоимость"}
+              value={"Price"}
               position="top"
               style={{ textAnchor: "middle" }}
             />

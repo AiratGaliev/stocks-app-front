@@ -25,10 +25,7 @@ class Stocks extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (
-      this.props.stock !== prevProps.stock ||
-      this.props.company !== prevProps.company
-    ) {
+    if (this.props.stock !== prevProps.stock) {
       this.setState({
         stocks: this.props.stock.stocks,
         companies: this.props.company.companies,
@@ -44,9 +41,9 @@ class Stocks extends Component {
     this.setState({ open: false });
   };
 
-  rowsChange = (newData) => {
+  handleChange = (newData) => {
     this.setState({ stocks: newData });
-    this.props.getStocks();
+    // this.props.getStocks(); //?
   };
 
   onSubmit = (newData) => {
@@ -55,6 +52,7 @@ class Stocks extends Component {
       id: newData.id,
     };
     this.props.editStock(stock);
+    // this.props.getStocks(); //?
   };
 
   onDelClick = (id) => {
@@ -70,6 +68,7 @@ class Stocks extends Component {
           Create Stock
         </Button>
         <StockCreateModal
+          data={companies}
           classes={classes}
           open={open}
           onClose={this.handleClose}
@@ -79,7 +78,7 @@ class Stocks extends Component {
           data={stocks}
           onSubmit={this.onSubmit}
           onDelClick={this.onDelClick}
-          rowsChange={this.rowsChange}
+          handleChange={this.handleChange}
         />
         <StocksChart stocks={stocks} companies={companies} />
       </div>

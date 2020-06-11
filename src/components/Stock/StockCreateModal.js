@@ -5,16 +5,52 @@ import Fade from "@material-ui/core/Fade";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { createStock } from "../../actions/stockActions";
-import { getCompanies } from "../../actions/companyActions";
+import { getCompanies, createCompany } from "../../actions/companyActions";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Button } from "@material-ui/core";
 import styles from "../../styles";
+import moment from "moment";
 
 class StockCreateModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: moment(Date.now()).format("YYYY-MM-DD"),
+      companyName: "",
+      companyId: "",
+      price: "",
+    };
+  }
+
+  handleChange = (name) => (event, selectedItem) => {
+    const data = event.target.value;
+    this.setState({ ...this.state, [name]: data });
+    if (selectedItem != null || selectedItem != undefined)
+      this.setState({ companyId: selectedItem.id });
+  };
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    const stock = {
+      date: this.state.date,
+      companyName: this.state.companyName,
+      companyId: this.state.companyId,
+      price: this.state.price,
+    };
+    console.log(stock);
+    this.props.createStock(stock);
+  };
+
   render() {
+    const { data } = this.props;
+    const defaultProps = {
+      options: data,
+      getOptionLabel: (option) => option.name,
+    };
     const { open, onClose, classes } = this.props;
     return (
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
         onClose={onClose}
@@ -25,11 +61,46 @@ class StockCreateModal extends Component {
         }}
       >
         <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">
-              react-transition-group animates me.
-            </p>
+          <div className={classes.paper} noValidate autoComplete="off">
+            <form className={classes.container} noValidate>
+              <TextField
+                id="date"
+                label="Date"
+                type="date"
+                margin="normal"
+                defaultValue={this.state.date}
+                onChange={this.handleChange("date")}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <Autocomplete
+                {...defaultProps}
+                id="debug"
+                freeSolo
+                onChange={this.handleChange("companyId")}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    onChange={this.handleChange("companyName")}
+                    label="Stock"
+                    margin="normal"
+                  />
+                )}
+              />
+              <TextField
+                id="standard-number"
+                label="Price"
+                type="number"
+                onChange={this.handleChange("price")}
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <Button onClick={this.onSubmit}>Save</Button>
+            </form>
           </div>
         </Fade>
       </Modal>
@@ -42,6 +113,7 @@ StockCreateModal.propTypes = {
   company: PropTypes.object.isRequired,
   createStock: PropTypes.func.isRequired,
   getCompanies: PropTypes.func.isRequired,
+  createCompany: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -49,6 +121,8 @@ const mapStateToProps = (state) => ({
   company: state.company,
 });
 
-export default connect(mapStateToProps, { createStock, getCompanies })(
-  styles(StockCreateModal)
-);
+export default connect(mapStateToProps, {
+  createStock,
+  getCompanies,
+  createCompany,
+})(styles(StockCreateModal));

@@ -46,20 +46,20 @@ class StocksTable extends Component {
     super(props);
     this.state = {
       columns: [
-        { title: "Дата", field: "date", editable: "never" },
-        { title: "Инструмент", field: "companyName", editable: "never" },
-        { title: "Стоимость", field: "price", type: "numeric" },
+        { title: "Date", field: "date", editable: "never" },
+        { title: "Stock", field: "companyName", editable: "never" },
+        { title: "Price", field: "price", type: "numeric" },
       ],
     };
   }
 
   render() {
     const { data } = this.props;
-    const { onSubmit, onDelClick, rowsChange } = this.props;
+    const { onSubmit, onDelClick, handleChange } = this.props;
     return (
       <MaterialTable
         icons={tableIcons}
-        title="Список ценных бумаг"
+        title="List of all Stocks"
         columns={this.state.columns}
         data={data}
         editable={{
@@ -69,7 +69,7 @@ class StocksTable extends Component {
               const dataUpdate = data;
               const index = data.indexOf(oldData);
               dataUpdate[index] = newData;
-              rowsChange(dataUpdate);
+              handleChange(dataUpdate);
               setTimeout(() => {
                 resolve();
               }, 1000);
