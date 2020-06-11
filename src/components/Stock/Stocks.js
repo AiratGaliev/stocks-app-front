@@ -6,6 +6,8 @@ import { getCompanies } from "../../actions/companyActions";
 import { connect } from "react-redux";
 import StocksTable from "./StocksTable";
 import StocksChart from "./StocksChart";
+import StockCreateModal from "./StockCreateModal";
+import { Button } from "@material-ui/core";
 
 class Stocks extends Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class Stocks extends Component {
     this.state = {
       stocks: [],
       companies: [],
+      open: false,
     };
   }
 
@@ -33,6 +36,14 @@ class Stocks extends Component {
     }
   }
 
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   rowsChange = (newData) => {
     this.setState({ stocks: newData });
     this.props.getStocks();
@@ -51,10 +62,20 @@ class Stocks extends Component {
   };
 
   render() {
-    const { stocks, companies } = this.state;
+    const { classes } = this.props;
+    const { open, stocks, companies } = this.state;
     return (
       <div>
+        <Button variant="contained" color="primary" onClick={this.handleOpen}>
+          Create Stock
+        </Button>
+        <StockCreateModal
+          classes={classes}
+          open={open}
+          onClose={this.handleClose}
+        />
         <StocksTable
+          classes={classes}
           data={stocks}
           onSubmit={this.onSubmit}
           onDelClick={this.onDelClick}
