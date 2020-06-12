@@ -46,9 +46,9 @@ export const editStock = (stock) => async (dispatch) => {
 };
 
 export const deleteStock = (id) => async (dispatch) => {
-  const res = await axios.delete(`/api/stocks/${id}`);
+  await axios.delete(`/api/stocks/${id}`);
   dispatch({
     type: DELETE_STOCK,
-    payload: res.data,
+    payload: id,
   });
 };

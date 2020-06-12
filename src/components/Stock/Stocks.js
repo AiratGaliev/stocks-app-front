@@ -16,6 +16,7 @@ class Stocks extends Component {
       stocks: [],
       companies: [],
       open: false,
+      stock: {},
     };
   }
 
@@ -24,11 +25,13 @@ class Stocks extends Component {
     this.props.getCompanies();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     if (this.props.stock !== prevProps.stock) {
-      this.setState({
-        stocks: this.props.stock.stocks,
-        companies: this.props.company.companies,
+      this.setState(() => {
+        return {
+          stocks: this.props.stock.stocks,
+          companies: this.props.company.companies,
+        };
       });
     }
   }
@@ -41,18 +44,17 @@ class Stocks extends Component {
     this.setState({ open: false });
   };
 
-  handleChange = (newData) => {
+  handleChange = (newData, newRowData) => {
     this.setState({ stocks: newData });
-    // this.props.getStocks(); //?
+    this.setState({ stock: newRowData });
   };
 
-  onSubmit = (newData) => {
+  onSubmit = () => {
     const stock = {
-      price: newData.price,
-      id: newData.id,
+      price: this.state.stock.price,
+      id: this.state.stock.id,
     };
     this.props.editStock(stock);
-    // this.props.getStocks(); //?
   };
 
   onDelClick = (id) => {
