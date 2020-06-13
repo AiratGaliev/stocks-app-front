@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import StocksTable from "./StocksTable";
 import StocksChart from "./StocksChart";
 import StockCreateModal from "./StockCreateModal";
-import { Button, Grid, Container } from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 
 class Stocks extends Component {
   componentDidMount() {
