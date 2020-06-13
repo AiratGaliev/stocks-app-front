@@ -6,7 +6,14 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 import { createCompany } from "../../actions/companyActions";
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@material-ui/core";
 import styles from "../../styles";
 
 class StockCreateModal extends Component {
@@ -34,35 +41,37 @@ class StockCreateModal extends Component {
   render() {
     const { open, onClose, classes } = this.props;
     return (
-      <Modal
+      <Dialog
         className={classes.modal}
         open={open}
         onClose={onClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        aria-labelledby="form-dialog-title"
       >
-        <Fade in={open}>
-          <div className={classes.paper} noValidate autoComplete="off">
-            <form className={classes.container} noValidate>
-              <TextField
-                id="name"
-                label="Name"
-                type="string"
-                margin="normal"
-                onChange={this.handleChangeSubmit("name")}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <Button onClick={this.onSubmit}>Save</Button>
-            </form>
-          </div>
-        </Fade>
-      </Modal>
+        <DialogTitle id="form-dialog-title">Create stock</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To create new stock company, please enter new name.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            id="name"
+            label="Name"
+            type="string"
+            margin="dense"
+            fullWidth
+            onChange={this.handleChangeSubmit("name")}
+            className={classes.textField}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.onSubmit} color="primary">
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 }

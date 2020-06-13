@@ -2,6 +2,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = (theme) => ({
   root: {
+    dosplay: "flex",
+    flexWrap: "wrap",
     "& > *": {
       margin: theme.spacing(1),
     },
@@ -13,18 +15,17 @@ const styles = (theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   container: {
     display: "flex",
     flexWrap: "wrap",
+    alignItems: "center",
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200,
   },
 });
 

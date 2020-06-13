@@ -57,7 +57,7 @@ class StocksChart extends PureComponent {
             <Label
               value={"Date"}
               position="right"
-              style={{ textAnchor: "middle" }}
+              style={{ textAnchor: "middle", x: 120, y: 120 }}
             />
           </XAxis>
           <YAxis>

@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import StocksTable from "./StocksTable";
 import StocksChart from "./StocksChart";
 import StockCreateModal from "./StockCreateModal";
-import { Button } from "@material-ui/core";
+import { Button, Grid, Container } from "@material-ui/core";
 
 class Stocks extends Component {
   componentDidMount() {
@@ -55,12 +55,11 @@ class Stocks extends Component {
     const { classes } = this.props;
     const { open, stocks, companies } = this.props;
     return (
-      <div>
+      <Container className={classes.root} container maxWidth="md">
         <Button variant="contained" color="primary" onClick={this.handleOpen}>
           Create Stock
         </Button>
         <StockCreateModal
-          data={companies}
           classes={classes}
           open={open}
           onClose={this.handleClose}
@@ -74,7 +73,7 @@ class Stocks extends Component {
           handleChangeSubmit={this.handleChangeSubmit}
         />
         <StocksChart stocks={stocks} companies={companies} />
-      </div>
+      </Container>
     );
   }
 }
