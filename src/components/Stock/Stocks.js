@@ -3,6 +3,7 @@ import styles from "../../styles";
 import PropTypes from "prop-types";
 import {
   getStocks,
+  createStock,
   editStock,
   deleteStock,
   modalStatus,
@@ -28,9 +29,19 @@ class Stocks extends Component {
     this.props.modalStatus(false);
   };
 
+  handleNewDataSubmit = (newData) => {
+    const stock = {
+      date: newData.date,
+      companyId: newData.companyId,
+      price: newData.price,
+    };
+    this.props.createStock(stock);
+  };
+
   handleChangeSubmit = (newRowData) => {
     const stock = {
       price: newRowData.price,
+      date: newRowData.date,
       id: newRowData.id,
     };
     this.props.editStock(stock);
@@ -56,8 +67,10 @@ class Stocks extends Component {
         />
         <StocksTable
           classes={classes}
-          data={stocks}
+          stocks={stocks}
+          companies={companies}
           onDelClick={this.onDelClick}
+          handleNewDataSubmit={this.handleNewDataSubmit}
           handleChangeSubmit={this.handleChangeSubmit}
         />
         <StocksChart stocks={stocks} companies={companies} />
@@ -68,14 +81,15 @@ class Stocks extends Component {
 
 Stocks.protoTypes = {
   stock: PropTypes.object.isRequired,
-  company: PropTypes.object.isRequired,
   getStocks: PropTypes.func.isRequired,
+  createStock: PropTypes.func.isRequired,
   editStock: PropTypes.func.isRequired,
   deleteStock: PropTypes.func.isRequired,
   getCompanies: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  stock: state.stock,
   stocks: state.stock.stocks,
   companies: state.company.companies,
   open: state.stock.open,
@@ -85,6 +99,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getStocks: () => dispatch(getStocks()),
+  createStock: (stock) => dispatch(createStock(stock)),
   editStock: (stock) => dispatch(editStock(stock)),
   getCompanies: () => dispatch(getCompanies()),
   deleteStock: (id) => dispatch(deleteStock(id)),

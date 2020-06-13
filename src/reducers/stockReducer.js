@@ -32,7 +32,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         errors: action.error,
-        stocks: state.stocks.push(Array.from(action.payload)),
+        stocks: Object.assign(state.stocks, action.payload),
       };
     case PATCH_STOCK:
       return {

@@ -1,8 +1,11 @@
-import { GET_COMPANIES, DELETE_COMPANY } from "../actions/types";
+import { GET_COMPANIES, POST_COMPANY } from "../actions/types";
+import moment from "moment";
 
 const initialState = {
   companies: [],
   company: {},
+  companyName: "",
+  date: moment(Date.now()).format("YYYY-MM-DD"),
 };
 
 export default function (state = initialState, action) {
@@ -12,12 +15,10 @@ export default function (state = initialState, action) {
         ...state,
         companies: action.payload,
       };
-    case DELETE_COMPANY:
+    case POST_COMPANY:
       return {
         ...state,
-        companies: state.companies.filter(
-          (company) => company.id !== action.payload
-        ),
+        companies: Object.assign(state.companies, Array.from(action.payload)),
       };
     default:
       return state;

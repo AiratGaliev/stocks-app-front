@@ -42,39 +42,66 @@ const tableIcons = {
 };
 
 class StocksTable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      columns: [
-        { title: "Date", field: "date", editable: "never" },
-        { title: "Stock", field: "companyName", editable: "never" },
-        { title: "Price", field: "price", type: "numeric" },
-      ],
-    };
-  }
+  convertDataForTable = (data) => {
+    let newData = {};
+    let oldData = Array.from(data);
+    if (Object.keys(oldData.length !== 0)) {
+      oldData.forEach((company) => {
+        newData[company.id] = company.name;
+      });
+      return newData;
+    }
+  };
 
   render() {
-    const { data, onDelClick, handleChangeSubmit } = this.props;
+    const {
+      stocks,
+      companies,
+      onDelClick,
+      handleChangeSubmit,
+      handleNewDataSubmit,
+    } = this.props;
     return (
       <MaterialTable
         icons={tableIcons}
         title="List of all Stocks"
-        columns={this.state.columns}
-        data={data}
+        columns={[
+          {
+            title: "Date",
+            field: "date",
+            type: "date",
+            editable: "always",
+          },
+          {
+            title: "Stock",
+            field: "companyId",
+            lookup: this.convertDataForTable(companies),
+            editable: "onAdd",
+          },
+          { title: "Price", field: "price", type: "numeric" },
+        ]}
+        data={stocks}
         editable={{
-          onRowUpdate: (newRowData, oldRowData) =>
+          onRowAdd: (newData) =>
             new Promise((resolve, reject) => {
-              handleChangeSubmit(newRowData);
               setTimeout(() => {
+                handleNewDataSubmit(newData);
                 resolve();
-              }, 1000);
+              }, 600);
+            }),
+          onRowUpdate: (newRowData) =>
+            new Promise((resolve, reject) => {
+              setTimeout(() => {
+                handleChangeSubmit(newRowData);
+                resolve();
+              }, 600);
             }),
           onRowDelete: (rowData) =>
             new Promise((resolve) => {
-              onDelClick(rowData.id);
               setTimeout(() => {
+                onDelClick(rowData.id);
                 resolve();
-              }, 1200);
+              }, 600);
             }),
         }}
       />
