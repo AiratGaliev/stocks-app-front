@@ -66,6 +66,15 @@ class Stocks extends Component {
   }
 }
 
+Stocks.protoTypes = {
+  stock: PropTypes.object.isRequired,
+  company: PropTypes.object.isRequired,
+  getStocks: PropTypes.func.isRequired,
+  editStock: PropTypes.func.isRequired,
+  deleteStock: PropTypes.func.isRequired,
+  getCompanies: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => ({
   stocks: state.stock.stocks,
   companies: state.company.companies,
