@@ -18,7 +18,7 @@ export default function (state = initialState, action) {
     case POST_COMPANY:
       return {
         ...state,
-        companies: Object.assign(state.companies, Array.from(action.payload)),
+        companies: [...state.companies, action.payload],
       };
     default:
       return state;
