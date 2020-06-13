@@ -26,7 +26,7 @@ class StockCreateModal extends Component {
   handleChange = (name) => (event, selectedItem) => {
     const data = event.target.value;
     this.setState({ ...this.state, [name]: data });
-    if (selectedItem != null || selectedItem != undefined)
+    if (selectedItem != null || typeof selectedItem !== "undefined")
       this.setState({ companyId: selectedItem.id });
   };
 
@@ -38,8 +38,8 @@ class StockCreateModal extends Component {
       companyId: this.state.companyId,
       price: this.state.price,
     };
-    console.log(stock);
     this.props.createStock(stock);
+    this.props.onClose();
   };
 
   render() {

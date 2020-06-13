@@ -54,7 +54,7 @@ class StocksTable extends Component {
   }
 
   render() {
-    const { onSubmit, data, onDelClick, handleChange } = this.props;
+    const { data, onDelClick, handleChangeSubmit } = this.props;
     return (
       <MaterialTable
         icons={tableIcons}
@@ -64,12 +64,8 @@ class StocksTable extends Component {
         editable={{
           onRowUpdate: (newRowData, oldRowData) =>
             new Promise((resolve, reject) => {
-              const dataUpdate = data;
-              const index = data.indexOf(oldRowData);
-              dataUpdate[index] = newRowData;
-              handleChange(dataUpdate, newRowData);
+              handleChangeSubmit(newRowData);
               setTimeout(() => {
-                onSubmit();
                 resolve();
               }, 1000);
             }),

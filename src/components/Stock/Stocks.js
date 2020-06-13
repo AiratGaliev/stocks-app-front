@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import styles from "../../styles";
 import PropTypes from "prop-types";
-import { getStocks, editStock, deleteStock } from "../../actions/stockActions";
+import {
+  getStocks,
+  editStock,
+  deleteStock,
+  modalStatus,
+} from "../../actions/stockActions";
 import { getCompanies } from "../../actions/companyActions";
 import { connect } from "react-redux";
 import StocksTable from "./StocksTable";
@@ -10,49 +15,23 @@ import StockCreateModal from "./StockCreateModal";
 import { Button } from "@material-ui/core";
 
 class Stocks extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      stocks: [],
-      companies: [],
-      open: false,
-      stock: {},
-    };
-  }
-
   componentDidMount() {
     this.props.getStocks();
     this.props.getCompanies();
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.stock !== prevProps.stock) {
-      this.setState(() => {
-        return {
-          stocks: this.props.stock.stocks,
-          companies: this.props.company.companies,
-        };
-      });
-    }
-  }
-
   handleOpen = () => {
-    this.setState({ open: true });
+    this.props.modalStatus(true);
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.props.modalStatus(false);
   };
 
-  handleChange = (newData, newRowData) => {
-    this.setState({ stocks: newData });
-    this.setState({ stock: newRowData });
-  };
-
-  onSubmit = () => {
+  handleChangeSubmit = (newRowData) => {
     const stock = {
-      price: this.state.stock.price,
-      id: this.state.stock.id,
+      price: newRowData.price,
+      id: newRowData.id,
     };
     this.props.editStock(stock);
   };
@@ -63,7 +42,7 @@ class Stocks extends Component {
 
   render() {
     const { classes } = this.props;
-    const { open, stocks, companies } = this.state;
+    const { open, stocks, companies } = this.props;
     return (
       <div>
         <Button variant="contained" color="primary" onClick={this.handleOpen}>
@@ -78,9 +57,8 @@ class Stocks extends Component {
         <StocksTable
           classes={classes}
           data={stocks}
-          onSubmit={this.onSubmit}
           onDelClick={this.onDelClick}
-          handleChange={this.handleChange}
+          handleChangeSubmit={this.handleChangeSubmit}
         />
         <StocksChart stocks={stocks} companies={companies} />
       </div>
@@ -88,23 +66,20 @@ class Stocks extends Component {
   }
 }
 
-Stocks.protoTypes = {
-  stock: PropTypes.object.isRequired,
-  company: PropTypes.object.isRequired,
-  getStocks: PropTypes.func.isRequired,
-  editStock: PropTypes.func.isRequired,
-  deleteStock: PropTypes.func.isRequired,
-  getCompanies: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = (state) => ({
-  stock: state.stock,
-  company: state.company,
+  stocks: state.stock.stocks,
+  companies: state.company.companies,
+  open: state.stock.open,
+  price: state.stock.price,
+  id: state.stock.id,
 });
 
-export default connect(mapStateToProps, {
-  getStocks,
-  editStock,
-  getCompanies,
-  deleteStock,
-})(styles(Stocks));
+const mapDispatchToProps = (dispatch) => ({
+  getStocks: () => dispatch(getStocks()),
+  editStock: (stock) => dispatch(editStock(stock)),
+  getCompanies: () => dispatch(getCompanies()),
+  deleteStock: (id) => dispatch(deleteStock(id)),
+  modalStatus: (status) => dispatch(modalStatus(status)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(styles(Stocks));

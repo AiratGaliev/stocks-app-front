@@ -13,46 +13,33 @@ import {
 import moment from "moment";
 
 class StocksChart extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { data: [], stocks: [] };
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.stocks !== prevProps.stocks) {
-      let temp = {};
-      let newData = [];
-      let oldData = Array.from(this.props.stocks);
-      // oldData.slice().sort(this.customSort);
-      oldData.forEach((stock) => {
-        temp = { date: this.parseDate(stock.date) };
-        newData.push(temp);
-        temp[stock.companyName] = stock.price;
-        newData.join(temp);
-      });
-      this.setState({ data: newData });
-    }
-  }
+  convertDataForChart = (data) => {
+    let temp = {};
+    let newData = [];
+    let oldData = Array.from(data);
+    oldData.forEach((stock) => {
+      temp = { date: this.parseDate(stock.date) };
+      newData.push(temp);
+      temp[stock.companyName] = stock.price;
+      newData.join(temp);
+    });
+    return newData;
+  };
 
   parseDate = (date) => {
     return Date.parse(date);
   };
-
-  // customSort = (a, b) => {
-  //   return this.parseDate(a.date) - this.parseDate(b.date);
-  // };
 
   dateFormatter = (item) => {
     return moment(item).format("DD.MM.YYYY");
   };
 
   render() {
-    const { data } = this.state;
-    const { companies } = this.props;
+    const { stocks, companies } = this.props;
     return (
       <ResponsiveContainer width={"100%"} height={400}>
         <LineChart
-          data={data}
+          data={this.convertDataForChart(stocks)}
           margin={{
             top: 60,
             right: 60,
