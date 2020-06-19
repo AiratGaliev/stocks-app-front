@@ -85,6 +85,7 @@ Stocks.protoTypes = {
   editStock: PropTypes.func.isRequired,
   deleteStock: PropTypes.func.isRequired,
   getCompanies: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -94,6 +95,7 @@ const mapStateToProps = (state) => ({
   open: state.stock.open,
   price: state.stock.price,
   id: state.stock.id,
+  errors: state.errors,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -5,6 +5,7 @@ const initialState = {
   companies: [],
   company: {},
   companyName: "",
+  name: "",
   date: moment(Date.now()).format("YYYY-MM-DD"),
 };
 
@@ -18,6 +19,7 @@ export default function (state = initialState, action) {
     case POST_COMPANY:
       return {
         ...state,
+        name: action.payload.name,
         companies: [...state.companies, action.payload],
       };
     default:

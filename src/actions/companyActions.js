@@ -7,6 +7,13 @@ import {
   GET_ERRORS,
 } from "./types";
 
+export const getErrors = (errors) => async (dispatch) => {
+  dispatch({
+    type: GET_ERRORS,
+    errors: errors.response.data,
+  });
+};
+
 export const getCompanies = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/companies");
@@ -14,11 +21,8 @@ export const getCompanies = () => async (dispatch) => {
       type: GET_COMPANIES,
       payload: res.data,
     });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data,
-    });
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };
 
@@ -29,11 +33,8 @@ export const createCompany = (company) => async (dispatch) => {
       type: POST_COMPANY,
       payload: res.data,
     });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data,
-    });
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };
 
@@ -44,11 +45,8 @@ export const editCompany = (company) => async (dispatch) => {
       type: PATCH_COMPANY,
       payload: res.data,
     });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data,
-    });
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };
 
@@ -59,10 +57,7 @@ export const deleteCompany = (id) => async (dispatch) => {
       type: DELETE_COMPANY,
       payload: id,
     });
-  } catch (error) {
-    dispatch({
-      type: GET_ERRORS,
-      payload: error.response.data,
-    });
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };

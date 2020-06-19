@@ -8,10 +8,10 @@ import {
   OPEN_MODAL,
 } from "./types";
 
-export const getErrors = (error) => async (dispatch) => {
+export const getErrors = (errors) => async (dispatch) => {
   dispatch({
     type: GET_ERRORS,
-    payload: error.response.data,
+    errors: errors.response.data,
   });
 };
 
@@ -22,8 +22,8 @@ export const getStocks = () => async (dispatch) => {
       type: GET_STOCKS,
       payload: res.data,
     });
-  } catch (error) {
-    dispatch(getErrors(error));
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };
 
@@ -34,8 +34,8 @@ export const createStock = (stock) => async (dispatch) => {
       type: POST_STOCK,
       payload: res.data,
     });
-  } catch (error) {
-    dispatch(getErrors(error));
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };
 
@@ -53,8 +53,8 @@ export const editStock = (stock) => async (dispatch) => {
       type: PATCH_STOCK,
       payload: res.data,
     });
-  } catch (error) {
-    dispatch(getErrors(error));
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };
 
@@ -65,7 +65,7 @@ export const deleteStock = (id) => async (dispatch) => {
       type: DELETE_STOCK,
       payload: id,
     });
-  } catch (error) {
-    dispatch(getErrors(error));
+  } catch (errors) {
+    dispatch(getErrors(errors));
   }
 };

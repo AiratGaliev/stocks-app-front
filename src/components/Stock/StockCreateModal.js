@@ -18,6 +18,7 @@ class StockCreateModal extends Component {
     super(props);
     this.state = {
       name: "",
+      errors: {},
     };
   }
 
@@ -32,11 +33,13 @@ class StockCreateModal extends Component {
       name: this.state.name,
     };
     this.props.createCompany(company);
-    this.props.onClose();
+    if (this.state.name.length >= 2 && this.state.name.length <= 50)
+      this.props.onClose();
   };
 
   render() {
     const { open, onClose, classes } = this.props;
+    const { errors } = this.props.errors;
     return (
       <Dialog
         className={classes.modal}
@@ -55,6 +58,8 @@ class StockCreateModal extends Component {
             label="Name"
             type="string"
             margin="dense"
+            error={errors.name}
+            helperText={errors.name}
             fullWidth
             onChange={this.handleChangeSubmit("name")}
             className={classes.textField}
@@ -76,10 +81,12 @@ class StockCreateModal extends Component {
 StockCreateModal.propTypes = {
   company: PropTypes.object.isRequired,
   createCompany: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   company: state.company,
+  errors: state.errors,
 });
 
 const mapDispatchToProps = (dispatch) => ({
