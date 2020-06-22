@@ -42,7 +42,7 @@ class Stocks extends Component {
     const stock = {
       price: newRowData.price,
       date: newRowData.date,
-      id: newRowData.id,
+      companyId: newRowData.companyId,
     };
     this.props.editStock(stock);
   };
@@ -52,8 +52,7 @@ class Stocks extends Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { open, stocks, companies } = this.props;
+    const { classes, open, stocks, companies, errors } = this.props;
     return (
       <Container className={classes.root} container maxWidth="md">
         <Button variant="contained" color="primary" onClick={this.handleOpen}>
@@ -67,6 +66,7 @@ class Stocks extends Component {
         <StocksTable
           classes={classes}
           stocks={stocks}
+          errors={errors}
           companies={companies}
           onDelClick={this.onDelClick}
           handleNewDataSubmit={this.handleNewDataSubmit}

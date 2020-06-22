@@ -60,11 +60,13 @@ class StocksTable extends Component {
       onDelClick,
       handleChangeSubmit,
       handleNewDataSubmit,
+      errors,
     } = this.props;
     return (
       <MaterialTable
         icons={tableIcons}
         title="List of all Stocks"
+        validationError={errors}
         columns={[
           {
             title: "Date",

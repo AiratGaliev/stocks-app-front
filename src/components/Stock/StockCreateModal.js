@@ -33,7 +33,7 @@ class StockCreateModal extends Component {
       name: this.state.name,
     };
     this.props.createCompany(company);
-    if (this.state.name.length >= 2 && this.state.name.length <= 50)
+    if (this.state.name.length >= 2 && this.state.name.length <= 20)
       this.props.onClose();
   };
 
